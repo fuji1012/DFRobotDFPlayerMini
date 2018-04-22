@@ -1,5 +1,5 @@
 /***************************************************
-DFPlayer - A Mini MP3 Player For Arduino
+DFPlayer - A Mini MP3 Player For Arduino ESP32
  <https://www.dfrobot.com/product-1121.html>
  
  ***************************************************
@@ -20,23 +20,26 @@ DFPlayer - A Mini MP3 Player For Arduino
  ****************************************************/
 
 #include "Arduino.h"
-#include "SoftwareSerial.h"
+//#include "SoftwareSerial.h"
 #include "DFRobotDFPlayerMini.h"
 
-SoftwareSerial mySoftwareSerial(10, 11); // RX, TX
+//SoftwareSerial mySoftwareSerial(10, 11); // RX, TX
+HardwareSerial myHardwareSerial(1); // use HardwareSerial UART1
 DFRobotDFPlayerMini myDFPlayer;
 void printDetail(uint8_t type, int value);
 
 void setup()
 {
-  mySoftwareSerial.begin(9600);
+  //mySoftwareSerial.begin(9600);
+  myHardwareSerial.begin(9600, SERIAL_8N1, 14, 12); // RX, TX
   Serial.begin(115200);
   
   Serial.println();
   Serial.println(F("DFRobot DFPlayer Mini Demo"));
   Serial.println(F("Initializing DFPlayer ... (May take 3~5 seconds)"));
   
-  if (!myDFPlayer.begin(mySoftwareSerial)) {  //Use softwareSerial to communicate with mp3.
+  //if (!myDFPlayer.begin(mySoftwareSerial)) {  //Use softwareSerial to communicate with mp3.
+  if (!myDFPlayer.begin(myHardwareSerial)) {  //Use HardwareSerial to communicate with mp3.
     Serial.println(F("Unable to begin:"));
     Serial.println(F("1.Please recheck the connection!"));
     Serial.println(F("2.Please insert the SD card!"));
